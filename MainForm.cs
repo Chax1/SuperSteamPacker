@@ -738,7 +738,7 @@ namespace SuperSteamPacker
                         Compress.StartInfo.FileName = "..\\Compressor\\7z.exe";
                         if (String.IsNullOrEmpty(settingsini.Read("customcompressoption", "SSP")))
                         {
-                            if (File.Exists("..\\Completed\\"+GameName+".Build."+BuildNo+"."+OS+"."+workarray[2]+".7z") || File.Exists("..\\Completed\\" + GameName+".Build."+BuildNo+"."+OS+"."+workarray[2]+".7z.001"))
+                            if (File.Exists("..\\Completed\\" + GameName + ".Build." + BuildNo + "." + OS + "." + workarray[2] + ".7z"))
                             {
                                 QueueBox.Items[int.Parse(file.Substring(5, 1))] = QueueBox.Items[int.Parse(file.Substring(5, 1))].ToString().Replace(languageini.Read("COMPRESSING", "SSP"), languageini.Read("SKIPPED", "SSP"));
                                 Directory.SetCurrentDirectory("..");
@@ -747,13 +747,12 @@ namespace SuperSteamPacker
                             }
                             else
                             {
-                                Compress.StartInfo.Arguments = "a -mx9 -sdel -pcs.rin.ru -v5g ..\\Completed\\" + GameName+".Build."+BuildNo+"."+OS+"."+workarray[2]+".7z *";
+                                Compress.StartInfo.Arguments = "a -mx9 ..\\Completed\\" + GameName + ".Build." + BuildNo + "." + OS + "." + workarray[2] + ".7z *";
                             }
-                            
                         }
                         else
                         {
-                            if (File.Exists("..\\Completed\\" + GameName+".Build."+BuildNo+"."+OS+"."+workarray[2]+".7z") || File.Exists("..\\Completed\\" + GameName+".Build."+BuildNo+"."+OS+"."+workarray[2]+".7z.001"))
+                            if (File.Exists("..\\Completed\\" + GameName + ".Build." + BuildNo + "." + OS + "." + workarray[2] + ".7z"))
                             {
                                 QueueBox.Items[int.Parse(file.Substring(5, 1))] = QueueBox.Items[int.Parse(file.Substring(5, 1))].ToString().Replace(languageini.Read("COMPRESSING", "SSP"), languageini.Read("SKIPPED", "SSP"));
                                 Directory.SetCurrentDirectory("..");
@@ -762,7 +761,7 @@ namespace SuperSteamPacker
                             }
                             else
                             {
-                                Compress.StartInfo.Arguments = "a " + settingsini.Read("customcompressoption", "SSP") + " ..\\Completed\\" + GameName+".Build."+BuildNo+"."+OS+"."+workarray[2]+".7z *";
+                                Compress.StartInfo.Arguments = "a " + settingsini.Read("customcompressoption", "SSP") + " ..\\Completed\\" + GameName + ".Build." + BuildNo + "." + OS + "." + workarray[2] + ".7z *";
                             }
                         }
                     }
@@ -771,7 +770,7 @@ namespace SuperSteamPacker
                         Compress.StartInfo.FileName = "..\\Compressor\\rar.exe";
                         if (String.IsNullOrEmpty(settingsini.Read("customcompressoption", "SSP")))
                         {
-                            if (File.Exists("..\\Completed\\" + GameName+".Build."+BuildNo+"."+OS+"."+workarray[2]+".rar") || File.Exists("..\\Completed\\" + GameName+".Build."+BuildNo+"."+OS+"."+workarray[2]+".part1.rar"))
+                            if (File.Exists("..\\Completed\\" + GameName + ".Build." + BuildNo + "." + OS + "." + workarray[2] + ".rar"))
                             {
                                 QueueBox.Items[int.Parse(file.Substring(5, 1))] = QueueBox.Items[int.Parse(file.Substring(5, 1))].ToString().Replace(languageini.Read("COMPRESSING", "SSP"), languageini.Read("SKIPPED", "SSP"));
                                 Directory.SetCurrentDirectory("..");
@@ -780,12 +779,12 @@ namespace SuperSteamPacker
                             }
                             else
                             {
-                                Compress.StartInfo.Arguments = "a -df -hpcs.rin.ru -htc -v5000000k -r ..\\Completed\\" + GameName+".Build."+BuildNo+"."+OS+"."+workarray[2]+".rar *";
+                                Compress.StartInfo.Arguments = "a -df ..\\Completed\\" + GameName + ".Build." + BuildNo + "." + OS + "." + workarray[2] + ".rar *";
                             }
                         }
                         else
                         {
-                            if (File.Exists("..\\Completed\\" + GameName+".Build."+BuildNo+"."+OS+"."+workarray[2]+".rar") || File.Exists("..\\Completed\\" + GameName+".Build."+BuildNo+"."+OS+"."+workarray[2]+".part1.rar"))
+                            if (File.Exists("..\\Completed\\" + GameName + ".Build." + BuildNo + "." + OS + "." + workarray[2] + ".rar"))
                             {
                                 QueueBox.Items[int.Parse(file.Substring(5, 1))] = QueueBox.Items[int.Parse(file.Substring(5, 1))].ToString().Replace(languageini.Read("COMPRESSING", "SSP"), languageini.Read("SKIPPED", "SSP"));
                                 Directory.SetCurrentDirectory("..");
@@ -794,7 +793,7 @@ namespace SuperSteamPacker
                             }
                             else
                             {
-                                Compress.StartInfo.Arguments = "a " + settingsini.Read("customcompressoption", "SSP") + " ..\\Completed\\" + GameName+".Build."+BuildNo+"."+OS+"."+workarray[2]+".rar *";
+                                Compress.StartInfo.Arguments = "a " + settingsini.Read("customcompressoption", "SSP") + " ..\\Completed\\" + GameName + ".Build." + BuildNo + "." + OS + "." + workarray[2] + ".rar *";
                             }
                         }
                     }
@@ -812,6 +811,65 @@ namespace SuperSteamPacker
                         }
                         continue;
                     }
+                    else
+                    {
+                        MessageBoxManager.Yes = "Other Dono";
+                        MessageBoxManager.No = "PC Dono";
+                        MessageBoxManager.Cancel = "PCVR Dono";
+                        MessageBoxManager.Register();
+
+                        DialogResult result = MessageBox.Show($"Select the destination folder for the upload: {GameName}",
+                                          "Upload Destination",
+                                          MessageBoxButtons.YesNoCancel,
+                                          MessageBoxIcon.Question);
+
+                        string destinationFolder;
+                        switch (result)
+                        {
+                            case DialogResult.Yes:
+                                destinationFolder = "Donation:Dono Other";
+                                break;
+                            case DialogResult.No:
+                                destinationFolder = "Donation:Dono PC";
+                                break;
+                            case DialogResult.Cancel:
+                                destinationFolder = "Donation:Dono PCVR";
+                                break;
+                            default:
+                                // User canceled the upload
+                                return;
+                        }
+
+                        // Now, use the destinationFolder in your rclone upload command
+                        string parentDirectory = Directory.GetParent(Environment.CurrentDirectory)?.FullName;
+                        string rclonePath = Path.Combine(parentDirectory, "rclone.exe");
+                        Debug.WriteLine(rclonePath);
+
+                        Process Upload = new Process();
+                        Upload.StartInfo.FileName = rclonePath;
+                        Upload.StartInfo.WorkingDirectory = Path.Combine(Environment.CurrentDirectory, "..\\");
+                        MessageBoxManager.Unregister();
+
+                        if (settingsini.Read("compressor", "SSP") == "7z")
+                        {
+                            Upload.StartInfo.Arguments = $"copy \"{parentDirectory}\\Completed\\{GameName}.Build.{BuildNo}.{OS}.{workarray[2]}.7z\" \"{destinationFolder}\"";
+                        }
+                        else
+                        {
+                            Upload.StartInfo.Arguments = $"copy \"{parentDirectory}\\Completed\\{GameName}.Build.{BuildNo}.{OS}.{workarray[2]}.rar\" \"{destinationFolder}\"";
+                        }
+                        Upload.Start();
+                        Upload.WaitForExit();
+
+                        if (settingsini.Read("compressor", "SSP") == "7z")
+                        {
+                            File.Delete($"{parentDirectory}\\Completed\\{GameName}.Build.{BuildNo}.{OS}.{workarray[2]}.7z");
+                        }
+                        else 
+                        {
+                            File.Delete($"{parentDirectory}\\Completed\\{GameName}.Build.{BuildNo}.{OS}.{workarray[2]}.rar");
+                        }
+                    }
 
                     if (!File.Exists("..\\Completed\\"+ GameName+".Build."+BuildNo+"."+OS+"."+workarray[2]+".7z.002") && settingsini.Read("compressor", "SSP") == "7z")
                     {
@@ -819,49 +877,9 @@ namespace SuperSteamPacker
                         {
                             File.Move("..\\Completed\\"+ GameName+".Build."+BuildNo+"."+OS+"."+workarray[2]+".7z.001", "..\\Completed\\"+ GameName+".Build."+BuildNo+"."+OS+"."+workarray[2]+".7z");
                         }
-                        
                     }
                     Directory.SetCurrentDirectory("..");
                     Directory.Delete("Temp", true);
-                    QueueBox.Items[int.Parse(file.Substring(5, 1))] = QueueBox.Items[int.Parse(file.Substring(5, 1))].ToString().Replace(languageini.Read("COMPRESSING", "SSP"), languageini.Read("WRITINGINFO", "SSP"));
-
-                    using (StreamWriter RINfo = new StreamWriter("Completed\\[CS.RIN.RU Info] " + GameName+".Build."+BuildNo+"."+OS+"."+workarray[2]+".txt"))
-                    {
-                        GameName = GameName.Replace("_", " ");
-                        GameName = GameName.Replace(".", " ");
-                        RINfo.WriteLine("[url=][color=white][b]" + GameName + " [Branch: " + workarray[2] + "] (Clean Steam Files)[/b][/color][/url]");
-                        RINfo.WriteLine("[size=85][color=white][b]Version:[/b] [i]" + BuildTime + " [Build " + BuildNo + "][/i][/color][/size]");
-                        RINfo.WriteLine();
-                        RINfo.WriteLine("[spoiler=\"[color=white]Depots & Manifests[/color]\"][code=text]");
-                        foreach (string item in DepotManifestList)
-                        {
-                            RINfo.WriteLine(item);
-                        }
-                        RINfo.WriteLine("[/code][/spoiler][color=white][b]Uploaded version:[/b] [i]" + BuildTime + " [Build " + BuildNo + "][/i][/color]");
-                    }
-
-                    if (settingsini.Read("uploadcrewmode", "SSP") == "1")
-                    {
-                        using (StreamWriter UCInfo = new StreamWriter("Completed\\[Upload Crew Info] " + GameName+".Build."+BuildNo+"."+OS+"."+workarray[2]+".txt"))
-                        {
-                            GameName = GameName.Replace("_", " ");
-                            GameName = GameName.Replace(".", " ");
-                            UCInfo.WriteLine("[color=red][b]" + GameName + "[/b][/color]");
-                            UCInfo.WriteLine("[list][color=yellow][b]Mirror 1[/b][/color]");
-                            UCInfo.WriteLine("[url=][color=cyan]" + GameName + "[/color] | [color=#FF8000]#UploadDate#[/color][/url] (#Filehost#) [i]< uploaded by #YourUsernameHere# / pw: cs.rin.ru >[/i][/list]");
-                            UCInfo.WriteLine();
-                            UCInfo.WriteLine();
-                            UCInfo.WriteLine();
-                            UCInfo.WriteLine("[color=red][b]" + GameName + "[/b][/color]");
-                            UCInfo.WriteLine("[spoiler=\"[color=white]Depots & Manifests[/color]\"][code=text]");
-                            foreach (string item in DepotManifestList)
-                            {
-                                UCInfo.WriteLine(item);
-                            }
-                            UCInfo.WriteLine("[/code][/spoiler][color=white][b]Uploaded version:[/b] [i]" + BuildTime + " [Build " + BuildNo + "][/i][/color]");
-                        }
-                    }
-
                     QueueBox.Items[int.Parse(file.Substring(5, 1))] = QueueBox.Items[int.Parse(file.Substring(5, 1))].ToString().Replace(languageini.Read("WRITINGINFO", "SSP"), languageini.Read("COMPLETE", "SSP"));
                 }
                 if (Directory.Exists("Jobs"))

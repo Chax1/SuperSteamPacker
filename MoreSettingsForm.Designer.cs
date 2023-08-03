@@ -29,28 +29,14 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MoreSettingsForm));
-            this.DelSavedLoginBtn = new System.Windows.Forms.Button();
             this.CompressorLabel = new System.Windows.Forms.Label();
             this.LangLabel = new System.Windows.Forms.Label();
             this.LangChoiceBox = new System.Windows.Forms.ComboBox();
             this.CompressorChoiceBox = new System.Windows.Forms.ComboBox();
             this.CustomCompressorOptionsCheckBox = new System.Windows.Forms.CheckBox();
             this.CustomCompressorOptionsTextBox = new System.Windows.Forms.TextBox();
-            this.UploadCrewModeCB = new System.Windows.Forms.CheckBox();
+            this.DelSavedLoginBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            // 
-            // DelSavedLoginBtn
-            // 
-            this.DelSavedLoginBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.DelSavedLoginBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DelSavedLoginBtn.ForeColor = System.Drawing.Color.White;
-            this.DelSavedLoginBtn.Location = new System.Drawing.Point(12, 184);
-            this.DelSavedLoginBtn.Name = "DelSavedLoginBtn";
-            this.DelSavedLoginBtn.Size = new System.Drawing.Size(280, 23);
-            this.DelSavedLoginBtn.TabIndex = 0;
-            this.DelSavedLoginBtn.Text = "DelSavedLoginBtn";
-            this.DelSavedLoginBtn.UseVisualStyleBackColor = false;
-            this.DelSavedLoginBtn.Click += new System.EventHandler(this.DelSavedLoginBtn_Click);
             // 
             // CompressorLabel
             // 
@@ -126,26 +112,25 @@
             this.CustomCompressorOptionsTextBox.WordWrap = false;
             this.CustomCompressorOptionsTextBox.TextChanged += new System.EventHandler(this.CustomCompressorOptionsTextBox_TextChanged);
             // 
-            // UploadCrewModeCB
+            // DelSavedLoginBtn
             // 
-            this.UploadCrewModeCB.AutoSize = true;
-            this.UploadCrewModeCB.BackColor = System.Drawing.Color.Transparent;
-            this.UploadCrewModeCB.ForeColor = System.Drawing.Color.White;
-            this.UploadCrewModeCB.Location = new System.Drawing.Point(12, 159);
-            this.UploadCrewModeCB.Name = "UploadCrewModeCB";
-            this.UploadCrewModeCB.Size = new System.Drawing.Size(160, 17);
-            this.UploadCrewModeCB.TabIndex = 7;
-            this.UploadCrewModeCB.Text = "UploadCrewModeCheckBox";
-            this.UploadCrewModeCB.UseVisualStyleBackColor = false;
-            this.UploadCrewModeCB.CheckedChanged += new System.EventHandler(this.UploadCrewModeCB_CheckedChanged);
+            this.DelSavedLoginBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.DelSavedLoginBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DelSavedLoginBtn.ForeColor = System.Drawing.Color.White;
+            this.DelSavedLoginBtn.Location = new System.Drawing.Point(12, 157);
+            this.DelSavedLoginBtn.Name = "DelSavedLoginBtn";
+            this.DelSavedLoginBtn.Size = new System.Drawing.Size(280, 23);
+            this.DelSavedLoginBtn.TabIndex = 0;
+            this.DelSavedLoginBtn.Text = "DelSavedLoginBtn";
+            this.DelSavedLoginBtn.UseVisualStyleBackColor = false;
+            this.DelSavedLoginBtn.Click += new System.EventHandler(this.DelSavedLoginBtn_Click);
             // 
             // MoreSettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(303, 217);
-            this.Controls.Add(this.UploadCrewModeCB);
+            this.ClientSize = new System.Drawing.Size(303, 192);
             this.Controls.Add(this.CustomCompressorOptionsTextBox);
             this.Controls.Add(this.CustomCompressorOptionsCheckBox);
             this.Controls.Add(this.CompressorChoiceBox);
@@ -165,14 +150,12 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Button DelSavedLoginBtn;
         private System.Windows.Forms.Label CompressorLabel;
         private System.Windows.Forms.Label LangLabel;
         private System.Windows.Forms.ComboBox LangChoiceBox;
         private System.Windows.Forms.ComboBox CompressorChoiceBox;
         private System.Windows.Forms.CheckBox CustomCompressorOptionsCheckBox;
         private System.Windows.Forms.TextBox CustomCompressorOptionsTextBox;
-        private System.Windows.Forms.CheckBox UploadCrewModeCB;
+        private System.Windows.Forms.Button DelSavedLoginBtn;
     }
 }
