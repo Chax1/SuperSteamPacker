@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SteamKit2;
+using SteamKit2.CDN;
+using SteamKit2.Internal;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,13 +14,17 @@ using System.Net;
 using System.Net.Http;
 using System.Resources;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static SteamKit2.Internal.CMsgDownloadRateStatistics;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace SuperSteamPacker
 {
     public partial class MainWindow : Form
     {
+        private static readonly HttpClient client = new HttpClient();
         public MainWindow()
         {
             InitializeComponent();
@@ -813,62 +819,8 @@ namespace SuperSteamPacker
                     }
                     else
                     {
-                        MessageBoxManager.Yes = "Other Dono";
-                        MessageBoxManager.No = "PC Dono";
-                        MessageBoxManager.Cancel = "PCVR Dono";
-                        MessageBoxManager.Register();
-
-                        DialogResult result = MessageBox.Show($"Select the destination folder for the upload: {GameName}",
-                                          "Upload Destination",
-                                          MessageBoxButtons.YesNoCancel,
-                                          MessageBoxIcon.Question);
-
-                        string destinationFolder;
-                        switch (result)
-                        {
-                            case DialogResult.Yes:
-                                destinationFolder = "Donation:Dono Other";
-                                break;
-                            case DialogResult.No:
-                                destinationFolder = "Donation:Dono PC";
-                                break;
-                            case DialogResult.Cancel:
-                                destinationFolder = "Donation:Dono PCVR";
-                                break;
-                            default:
-                                // User canceled the upload
-                                return;
-                        }
-
-                        // Now, use the destinationFolder in your rclone upload command
                         string parentDirectory = Directory.GetParent(Environment.CurrentDirectory)?.FullName;
-                        string rclonePath = Path.Combine(parentDirectory, "rclone.exe");
-                        Debug.WriteLine(rclonePath);
-
-                        Process Upload = new Process();
-                        Upload.StartInfo.FileName = rclonePath;
-                        Upload.StartInfo.WorkingDirectory = Path.Combine(Environment.CurrentDirectory, "..\\");
-                        MessageBoxManager.Unregister();
-
-                        if (settingsini.Read("compressor", "SSP") == "7z")
-                        {
-                            Upload.StartInfo.Arguments = $"copy \"{parentDirectory}\\Completed\\{GameName}.Build.{BuildNo}.{OS}.{workarray[2]}.7z\" \"{destinationFolder}\"";
-                        }
-                        else
-                        {
-                            Upload.StartInfo.Arguments = $"copy \"{parentDirectory}\\Completed\\{GameName}.Build.{BuildNo}.{OS}.{workarray[2]}.rar\" \"{destinationFolder}\"";
-                        }
-                        Upload.Start();
-                        Upload.WaitForExit();
-
-                        if (settingsini.Read("compressor", "SSP") == "7z")
-                        {
-                            File.Delete($"{parentDirectory}\\Completed\\{GameName}.Build.{BuildNo}.{OS}.{workarray[2]}.7z");
-                        }
-                        else 
-                        {
-                            File.Delete($"{parentDirectory}\\Completed\\{GameName}.Build.{BuildNo}.{OS}.{workarray[2]}.rar");
-                        }
+                        AskForUpload(workarray, AppID, Branch, GameName, OS, BuildNo, parentDirectory);
                     }
 
                     if (!File.Exists("..\\Completed\\"+ GameName+".Build."+BuildNo+"."+OS+"."+workarray[2]+".7z.002") && settingsini.Read("compressor", "SSP") == "7z")
@@ -898,6 +850,130 @@ namespace SuperSteamPacker
                 PasswordTextBox.Enabled = true;
                 UsernameTextBox.Enabled = true;
             }
+        }
+
+        private async void AskForUpload(string[] workarray, string AppID, string Branch, string GameName, string OS, string BuildNo, string parentDirectory)
+        {
+            var settingsini = new Ini("Settings.ini");
+            bool isMsgBoxRegistered = false;
+            await Task.Run(async () =>
+            {
+                if (!isMsgBoxRegistered)
+                {
+                    MessageBoxManager.Yes = "Other Dono";
+                    MessageBoxManager.No = "PC Dono";
+                    MessageBoxManager.Cancel = "PCVR Dono";
+                    MessageBoxManager.Register();
+                    isMsgBoxRegistered = true;
+                }
+                else
+                {
+                    MessageBoxManager.Unregister();
+                }
+
+                DialogResult result = MessageBox.Show($"Select the destination folder for the upload: {GameName}",
+                                      "Upload Destination",
+                                      MessageBoxButtons.YesNoCancel,
+                                      MessageBoxIcon.Question);
+
+                string destinationFolder;
+                switch (result)
+                {
+                    case DialogResult.Yes:
+                        destinationFolder = "Donation:Dono Other";
+                        break;
+                    case DialogResult.No:
+                        destinationFolder = "Donation:Dono PC";
+                        break;
+                    case DialogResult.Cancel:
+                        destinationFolder = "Donation:Dono PCVR";
+                        break;
+                    default:
+                        // User canceled the upload
+                        return;
+                }
+
+                Thread t1;
+                t1 = new Thread(() =>
+                {
+                    string rclonePath = Path.Combine(parentDirectory, "rclone.exe");
+                    Debug.WriteLine(rclonePath);
+
+                    Process Upload = new Process();
+                    Upload.StartInfo.FileName = rclonePath;
+                    Upload.StartInfo.WorkingDirectory = parentDirectory;
+                    Upload.StartInfo.CreateNoWindow = true;
+                    Upload.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+
+                    if (settingsini.Read("compressor", "SSP") == "7z")
+                    {
+                        if (File.Exists($"{parentDirectory}\\Completed\\{GameName}.Build.{BuildNo}.{OS}.{workarray[2]}.7z")) {
+                            Upload.StartInfo.Arguments = $"copy \"{parentDirectory}\\Completed\\{GameName}.Build.{BuildNo}.{OS}.{workarray[2]}.7z\" \"{destinationFolder}\" --rc";
+                        }
+                    }
+                    else
+                    {
+                        if (File.Exists($"{parentDirectory}\\Completed\\{GameName}.Build.{BuildNo}.{OS}.{workarray[2]}.rar"))
+                        {
+                            Upload.StartInfo.Arguments = $"copy \"{parentDirectory}\\Completed\\{GameName}.Build.{BuildNo}.{OS}.{workarray[2]}.rar\" \"{destinationFolder}\" --rc";
+                        }
+                    }
+                    Upload.Start();
+                    Upload.WaitForExit();
+
+                    if (settingsini.Read("compressor", "SSP") == "7z")
+                    {
+                        File.Delete($"{parentDirectory}\\Completed\\{GameName}.Build.{BuildNo}.{OS}.{workarray[2]}.7z");
+                    }
+                    else
+                    {
+                        File.Delete($"{parentDirectory}\\Completed\\{GameName}.Build.{BuildNo}.{OS}.{workarray[2]}.rar");
+                    }
+                });
+
+                t1.IsBackground = true;
+                t1.Start();
+                dontCloseLabel.Invoke((MethodInvoker)delegate
+                {
+                    dontCloseLabel.Visible = true;
+                });
+                while (t1.IsAlive)
+                {
+                    try
+                    {
+                        HttpResponseMessage response = await client.PostAsync("http://127.0.0.1:5572/core/stats", null);
+                        string foo = await response.Content.ReadAsStringAsync();
+                        Debug.WriteLine("RESP CONTENT " + foo);
+                        dynamic results = JsonConvert.DeserializeObject<dynamic>(foo);
+
+                        if (results["transferring"] != null)
+                        {
+                            float etaShit = 0;
+
+                            foreach (dynamic obj in results.transferring)
+                            {
+                                etaShit = obj["eta"].ToObject<long>();
+                            }
+
+                            Debug.WriteLine($"Fucking time: {etaShit}");
+                            float seconds = etaShit;
+                            TimeSpan time = TimeSpan.FromSeconds(seconds);
+                            dontCloseLabel.Invoke((MethodInvoker)delegate
+                            {
+                                etaLabel.Text = "ETA: " + time.ToString(@"hh\:mm\:ss") + " left";
+                            });
+                        }
+                    }
+                    catch { }
+
+                    await Task.Delay(100);
+                }
+                dontCloseLabel.Invoke((MethodInvoker)delegate
+                {
+                    dontCloseLabel.Visible = false;
+                    etaLabel.Text = "NOT UPLOADING";
+                });
+            });
         }
 
         private void MoreSettingsBtn_Click(object sender, EventArgs e)

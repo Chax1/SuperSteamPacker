@@ -36,6 +36,7 @@
             this.CustomCompressorOptionsCheckBox = new System.Windows.Forms.CheckBox();
             this.CustomCompressorOptionsTextBox = new System.Windows.Forms.TextBox();
             this.DelSavedLoginBtn = new System.Windows.Forms.Button();
+            this.chaxLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // CompressorLabel
@@ -125,12 +126,24 @@
             this.DelSavedLoginBtn.UseVisualStyleBackColor = false;
             this.DelSavedLoginBtn.Click += new System.EventHandler(this.DelSavedLoginBtn_Click);
             // 
+            // chaxLabel
+            // 
+            this.chaxLabel.AutoSize = true;
+            this.chaxLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.chaxLabel.Location = new System.Drawing.Point(89, 188);
+            this.chaxLabel.Name = "chaxLabel";
+            this.chaxLabel.Size = new System.Drawing.Size(125, 13);
+            this.chaxLabel.TabIndex = 7;
+            this.chaxLabel.Text = "Modified by Chax with <3";
+            this.chaxLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // MoreSettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(303, 192);
+            this.ClientSize = new System.Drawing.Size(303, 210);
+            this.Controls.Add(this.chaxLabel);
             this.Controls.Add(this.CustomCompressorOptionsTextBox);
             this.Controls.Add(this.CustomCompressorOptionsCheckBox);
             this.Controls.Add(this.CompressorChoiceBox);
@@ -157,5 +170,6 @@
         private System.Windows.Forms.CheckBox CustomCompressorOptionsCheckBox;
         private System.Windows.Forms.TextBox CustomCompressorOptionsTextBox;
         private System.Windows.Forms.Button DelSavedLoginBtn;
+        private System.Windows.Forms.Label chaxLabel;
     }
 }

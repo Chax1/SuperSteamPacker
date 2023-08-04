@@ -62,6 +62,8 @@
             this.BranchNameTxtBox = new System.Windows.Forms.TextBox();
             this.BranchPasswordCB = new System.Windows.Forms.CheckBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.etaLabel = new System.Windows.Forms.Label();
+            this.dontCloseLabel = new System.Windows.Forms.Label();
             this.QueueManageGrp.SuspendLayout();
             this.GameManageGrp.SuspendLayout();
             this.BranchGrp.SuspendLayout();
@@ -521,12 +523,39 @@
             this.pictureBox1.TabIndex = 18;
             this.pictureBox1.TabStop = false;
             // 
+            // etaLabel
+            // 
+            this.etaLabel.AutoSize = true;
+            this.etaLabel.Font = new System.Drawing.Font("OCR A Extended", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.etaLabel.ForeColor = System.Drawing.Color.White;
+            this.etaLabel.Location = new System.Drawing.Point(6, 462);
+            this.etaLabel.Name = "etaLabel";
+            this.etaLabel.Size = new System.Drawing.Size(262, 35);
+            this.etaLabel.TabIndex = 22;
+            this.etaLabel.Text = "NOT UPLOADING";
+            this.etaLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // dontCloseLabel
+            // 
+            this.dontCloseLabel.AutoSize = true;
+            this.dontCloseLabel.Font = new System.Drawing.Font("OCR A Extended", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dontCloseLabel.ForeColor = System.Drawing.Color.White;
+            this.dontCloseLabel.Location = new System.Drawing.Point(425, 462);
+            this.dontCloseLabel.Name = "dontCloseLabel";
+            this.dontCloseLabel.Size = new System.Drawing.Size(243, 35);
+            this.dontCloseLabel.TabIndex = 23;
+            this.dontCloseLabel.Text = "DO NOT CLOSE";
+            this.dontCloseLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.dontCloseLabel.Visible = false;
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(678, 466);
+            this.ClientSize = new System.Drawing.Size(678, 501);
+            this.Controls.Add(this.dontCloseLabel);
+            this.Controls.Add(this.etaLabel);
             this.Controls.Add(this.BranchGrp);
             this.Controls.Add(this.GameManageGrp);
             this.Controls.Add(this.QueueManageGrp);
@@ -595,6 +624,8 @@
         private System.Windows.Forms.TextBox BranchNameTxtBox;
         private System.Windows.Forms.Label BranchLabel;
         private System.Windows.Forms.TextBox BranchPasswordTxtBox;
+        private System.Windows.Forms.Label etaLabel;
+        private System.Windows.Forms.Label dontCloseLabel;
     }
 }
 
